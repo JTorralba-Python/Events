@@ -1,0 +1,4 @@
+clear
+sudo rm -rf /var/lib/firebird/data/A
+./Events.py
+sudo rm -rf /var/lib/firebird/data/A

@@ -1,0 +1,35 @@
+wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+yum install -y epel-release-latest-7.noarch.rpm
+yum install -y firebird python-fdb
+
+nano /etc/firebird/firebird.conf
+DatabaseAccess = Restrict /var/lib/firebird/data
+
+systemctl enable firebird-superserver.service
+systemctl start firebird-superserver.service
+
+nano /etc/profile
+export FIREBIRD_HOME=/usr/lib64/firebird
+export PATH=$PATH:$FIREBIRD_HOME/bin
+export ISC_USER=sysdba
+export ISC_PASSWORD=masterkey
+
+nano /etc/group
+firebird:x:990:jtorralba
+
+
+connect "/var/lib/firebird/data/A" user "sysdba" password "masterkey"; (or connect A;)
+
+insert into CASE_TBL (CASENO) values (1); insert into CASE_TBL (CASENO) values (2); insert into CASE_TBL (CASENO) values (3); select * from CASE_TBL; commit;
+
+insert into CASE_TBL (CASENO) values (1); select * from CASE_TBL; commit;
+
+insert into CASE_TBL (CASENO) values (2); select * from CASE_TBL; commit;
+
+insert into CASE_TBL (CASENO) values (3); select * from CASE_TBL; commit;
+
+insert into CASE_TBL (CASENO) values (4); select * from CASE_TBL; commit;
+
+insert into CASE_TBL (CASENO) values (0); select * from CASE_TBL; commit;
+
+connect 0;
